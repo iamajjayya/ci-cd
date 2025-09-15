@@ -32,7 +32,7 @@ pipeline {
             steps {
             input message: "Deploy to Production", ok: "Yes deploy"
             
-            bat "docker run -d -p 8085:80 --name production ci-cd-demo:latest || exit 0"
+            bat "docker run -d -p 8085:80 --name production-1 ci-cd-demo:latest || exit 0"
         }}
     }
 }
