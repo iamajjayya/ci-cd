@@ -4,13 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/iamajjayya/ci-cd.git'
+                git branch: 'main',
+                    url: 'https://github.com/iamajjayya/ci-cd.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ci-cd-demo:latest .'
+                bat 'docker build -t ci-cd-demo:latest .'
             }
         }
 
@@ -22,7 +23,7 @@ pipeline {
 
         stage('Deploy to Staging') {
             steps {
-                sh 'docker run -d -p 8081:80 --name staging ci-cd-demo:latest || true'
+                bat 'docker run -d -p 8081:80 --name staging ci-cd-demo:latest || exit 0'
             }
         }
 
@@ -32,7 +33,7 @@ pipeline {
                 ok "Yes, deploy"
             }
             steps {
-                sh 'docker run -d -p 8082:80 --name production ci-cd-demo:latest || true'
+                bat 'docker run -d -p 8082:80 --name production ci-cd-demo:latest || exit 0'
             }
         }
     }
