@@ -25,7 +25,7 @@ pipeline {
             steps {
             input message: "Deploy to staging", ok: "Yes, Deploy"
             
-            bat "docker run -d -p 8084:80 --name staging ci-cd-demo:latest || exit 0"
+            bat "docker run -d -p 8084:80 --name staging-1 ci-cd-demo:latest || exit 0"
         }}
 
         stage ("Deploy to production") {
