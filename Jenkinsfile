@@ -25,14 +25,14 @@ pipeline {
             steps {
             input message: "Deploy to staging", ok: "Yes, Deploy"
             
-            bat "docker run -d -p 8084:80 --name staging ci-cd-demo:1.1.1 || exit 0"
+            bat "docker run -d -p 8084:80 --name staging ci-cd-demo:latest || exit 0"
         }}
 
         stage ("Deploy to production") {
             steps {
             input message: "Deploy to Production", ok: "Yes deploy"
             
-            bat "dcoekr run -d -p 8085:80 --name production ci-cd-demo:1.1.1 || exit 0"
+            bat "dcoekr run -d -p 8085:80 --name production ci-cd-demo:latest || exit 0"
         }}
     }
 }
