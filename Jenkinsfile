@@ -11,7 +11,7 @@ pipeline {
 
         stage('Build Docker image') {
             steps {
-                bat 'docker build -t ci-cd-demo:latest'
+                bat 'docker build -t ci-cd-demo:latest .'
             }
         }
 
