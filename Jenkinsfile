@@ -78,7 +78,7 @@ pipeline{
           }
            always {
               echo "Archiving build logs and reports"
-              archiveArtifacts artifacts: "**/*.log, **/*.txt" allowEmptyArchive: true
+              archiveArtifacts artifacts: "**/*.log, **/*.txt", allowEmptyArchive: true
            }
     }
 }
