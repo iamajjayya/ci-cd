@@ -64,7 +64,7 @@ pipeline{
                 body:  """
                     Hello Teams
                     
-                    Pipeline *${env.JOB_NAME}* (Build #${env.BUILD_NUMBER}) Completed Succesfully .
+                    Pipeline *${env.JOB_NAME}* (Build #${env.BUILD_NUMBER}) Failed .
 
                     You can check details here: ${env.BUILD_URL}
 
