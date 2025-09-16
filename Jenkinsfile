@@ -1,15 +1,15 @@
-pipeline {
+pipeline{
     aganet any
 
-    stages{
-        stage('Checkout') {
+    stages {
+        stage ('checkout') {
             steps {
                 git branch: 'main',
-                url: "https://github.com/iamajjayya/ci-cd.git"
+                    url: "https://github.com/iamajjayya/ci-cd.git"
             }
         }
 
-        stage('Build Docker image') {
+        stage('Build Docker Image') {
             steps {
                 bat 'docker build -t ci-cd-demo:latest .'
             }
@@ -17,24 +17,68 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo "Running basic tests (skip for now)"
+                echo "Running basic tests"
+                writeFile file: "test-report.txt, text:"All tests skipped""
+                archiveArtifacts artifacts: "test-report.txt", followSymlinks: false
             }
         }
 
-        stage (" Deploying to staging") {
-            input {
-                message "Deploy to staging"
-                ok "Yes, Deploy"
+        stage('Deploying to staging') {
+            steps {
+                input message: "Deploy to staging", ok: "Yes, Deploy"
+                bat "docker run -d -p 8089 --name staging-3 ci-cd-demo:latest"
             }
-            bat "docker run -d -p 8084:80 --name staging ci-cd-demo:1.1.1 || exit 0"
         }
 
-        stage ("Deploy to production") {
-            input {
-                message "Deploy to Production"
-                ok "Yes deploy"
+        stage('Deploying to production') {
+            steps {
+                input message: "Deploy to production", ok: "Yes deploy"
+                bat "docker run -d -p 8090:80 --name production-4 ci-cd-demo:latest"
             }
-            bat "dcoekr run -d -p 8085:80 --name production ci-cd-demo:1.1.1 || exit 0"
         }
+    }
+
+
+    post {
+        success {
+            echo "Pipeline executed successfully"
+            mail to: "ajjayya2002@gmail.com"
+                subject: "SUCCESS: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}"
+                body:  """
+                    Hello Teams
+                    
+                    Pipeline *${env.JOB_NAME}* (Build #${env.BUILD_NUMBER}) Completed Succesfully .
+
+                    You can check details here: ${env.BUILD_URL}
+
+                Regards,
+                Jenkins - Ajjayya    
+                   
+                 """
+
+        }
+          failure {
+            echo "Pipleline Failed"
+            mail to: "ajjayya2002@gmail.com"
+                subject: "FAILED: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}"
+                body:  """
+                    Hello Teams
+                    
+                    Pipeline *${env.JOB_NAME}* (Build #${env.BUILD_NUMBER}) Completed Succesfully .
+
+                    You can check details here: ${env.BUILD_URL}
+
+                Regards,
+                Jenkins - Ajjayya    
+                   
+                 """
+
+        
+
+          }
+           always {
+              echo "Archiving build logs and reports"
+              archiveArtifacts artifacts: "**/*.log, **/*.txt" allowEmptyArchive: true
+           }
     }
 }
