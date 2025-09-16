@@ -1,5 +1,5 @@
 pipeline{
-    aganet any
+    agent any
 
     stages {
         stage ('checkout') {
@@ -18,7 +18,7 @@ pipeline{
         stage('Test') {
             steps {
                 echo "Running basic tests"
-                writeFile file: "test-report.txt, text:"All tests skipped""
+                writeFile file: "test-report.txt", text:"All tests skipped"
                 archiveArtifacts artifacts: "test-report.txt", followSymlinks: false
             }
         }
@@ -42,8 +42,8 @@ pipeline{
     post {
         success {
             echo "Pipeline executed successfully"
-            mail to: "ajjayya2002@gmail.com"
-                subject: "SUCCESS: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}"
+            mail to: "ajjayya2002@gmail.com",
+                subject: "SUCCESS: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}",
                 body:  """
                     Hello Teams
                     
@@ -59,8 +59,8 @@ pipeline{
         }
           failure {
             echo "Pipleline Failed"
-            mail to: "ajjayya2002@gmail.com"
-                subject: "FAILED: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}"
+            mail to: "ajjayya2002@gmail.com",
+                subject: "FAILED: Jenkins Pipeline [${env.JOB_NAME}] #${env.BUILD_NUMBER}",
                 body:  """
                     Hello Teams
                     
